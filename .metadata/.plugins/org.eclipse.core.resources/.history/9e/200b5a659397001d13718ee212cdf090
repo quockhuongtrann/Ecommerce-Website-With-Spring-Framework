@@ -1,0 +1,17 @@
+package com.shoptqk.admin.report;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderDetailReportService extends AbstractReportService {
+
+	@Override
+	protected List<ReportItem> getReportDataByDateRangeInternal(Date startDate, Date endDate, ReportType reportType) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+}

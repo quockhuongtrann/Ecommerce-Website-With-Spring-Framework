@@ -1,0 +1,24 @@
+package com.shoptqk.admin;
+
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
+
+public class AmazonS3UtilTests {
+	
+	@Test
+	public void testListFolder() {
+		String folderName = "product-images/18";
+		List<String> listKeys = AmazonS3Util.listFolder(folderName);
+		listKeys.forEach(System.out::println);
+	}
+	
+	@Test
+	public void testUploadFile() {
+		
+		String folderName = "test-upload";
+		String fileName = "background.jpg";
+		String filePath = "C:\\Users\\quock\\Desktop\\" + fileName;
+		
+	}
+}

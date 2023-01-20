@@ -1,0 +1,78 @@
+package com.shoptqk.security;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.HttpSessionCsrfTokenRepository;
+
+import com.shoptqk.oauth.CustomerOAuth2UserService;
+import com.shoptqk.oauth.OAuth2LoginSuccessHandler;
+
+@Configuration
+@EnableWebSecurity
+public class WebSecurityConfig {
+	
+	@Autowired private CustomerOAuth2UserService customerOAuth2UserService;
+	@Autowired private OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
+	@Autowired private DatabaseLoginSuccessHandler databaseLoginSuccessHandler;
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	@Bean
+	public UserDetailsService userDetailsService() {
+		return new CustomerUserDetailsService();
+	}
+	
+	@Bean
+	public DaoAuthenticationProvider authenticationProvider() {
+		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+		
+		authProvider.setUserDetailsService(userDetailsService());
+		authProvider.setPasswordEncoder(passwordEncoder());
+		
+		return authProvider;
+	}
+	
+	@Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		String[] staticResources = {"/images/**", "/js/**", "/webjars/**"};
+        http.authorizeRequests()
+	        	.requestMatchers("/account_details", "/update_account_details", "/orders/**", 
+	        			"/cart", "/address_book/**", "/checkout", "/place_order", "/reviews/**",
+	        			"/write_review/**").authenticated()
+		        .requestMatchers(staticResources).permitAll()
+				.anyRequest().permitAll()
+        	.and()
+        	.formLogin()
+        		.loginPage("/login")
+        		.usernameParameter("email")
+        		.successHandler(databaseLoginSuccessHandler)
+        		.permitAll()
+        	.and()
+        	.oauth2Login()
+        		.loginPage("/login")
+        		.userInfoEndpoint()
+        		.userService(customerOAuth2UserService)
+        		.and()
+        		.successHandler(oAuth2LoginSuccessHandler)
+        	.and()
+        	.logout().permitAll()
+        	.and()
+        	.rememberMe()
+        		.key("1234567890_aBcDeFgHiJkLmNoPqRsTuVwXyZ")
+        		.tokenValiditySeconds(14 * 24 * 60 * 60)
+        	.and()
+        		.csrf().csrfTokenRepository(new HttpSessionCsrfTokenRepository());
+        return http.build();
+    }
+}

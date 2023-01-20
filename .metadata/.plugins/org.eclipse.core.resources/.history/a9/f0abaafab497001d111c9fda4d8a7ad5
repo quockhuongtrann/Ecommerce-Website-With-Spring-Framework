@@ -1,0 +1,9 @@
+package com.shoptqk.admin.review;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.shoptqk.common.entity.Review;
+
+public class ReviewRepository implements JpaRepository<Review, Integer> {
+
+}

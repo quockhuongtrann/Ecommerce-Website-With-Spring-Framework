@@ -1,0 +1,28 @@
+// Sales report common
+
+function setUpButtonEventHandlers(reportType) {
+	divCustomDateRange = $("#divCustomDateRange" + reportType);
+	startDateField = document.getElementById('startDate' + reportType);
+	endDateField = document.getElementById('endDate' + reportType);
+	$(".button-sales-by"+ reportType).on("click", function() {
+		$(".button-sales-by" + reportType).each(function(e) {
+			$(this).removeClass('btn-primary').addClass('btn-light');
+		});
+		
+		$(this).removeClass('btn-light').addClass('btn-primary');
+		
+		period = $(this).attr("period");
+		if (period) {
+			loadSalesReportByDate(period);
+			divCustomDateRange.addClass('d-none');
+		} else {
+			divCustomDateRange.removeClass('d-none');
+		}
+	});
+	initCustomDateRange();
+	
+	$("#buttonViewReportByDateRange" + reportType).on("click", function(e) {
+		validateDateRange();
+		
+	});
+}

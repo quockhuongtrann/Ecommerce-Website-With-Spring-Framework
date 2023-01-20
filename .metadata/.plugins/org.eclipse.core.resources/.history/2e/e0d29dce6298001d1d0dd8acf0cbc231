@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div th:fragment="content">
+	<div class="row"><div class="col"><hr /></div></div>
+	<div class="row m-1">
+		<h3 id="review">Customer Reviews:</h3>
+	</div>
+</div>
+</body>
+</html>

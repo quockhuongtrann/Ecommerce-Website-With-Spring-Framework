@@ -1,0 +1,13 @@
+package com.shoptqk.order;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.shoptqk.customer.CustomerService;
+
+@RestController
+public class OrderRestController {
+	
+	@Autowired private OrderService orderService;
+	@Autowired private CustomerService customerService;
+}

@@ -1,0 +1,36 @@
+package com.shoptqk.admin.report;
+
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shoptqk.admin.order.OrderDetailRepository;
+import com.shoptqk.common.entity.order.OrderDetail;
+
+@Service
+public class OrderDetailReportService extends AbstractReportService {
+
+	@Autowired private OrderDetailRepository orderDetailRepository;
+	
+	@Override
+	protected List<ReportItem> getReportDataByDateRangeInternal(Date startDate, Date endDate, ReportType reportType) {
+		List<OrderDetail> listOrderDetails = null;
+		if (reportType.equals(ReportType.CATEGORY)) {
+			listOrderDetails = orderDetailRepository.findWithCategoryAndTimeBetween(startDate, endDate);
+		}
+		printRawData(listOrderDetails);
+		return null;
+	}
+
+	private void printRawData(List<OrderDetail> listOrderDetails) {
+		for (OrderDetail detail : listOrderDetails) {
+			System.out.printf("%d, %-20s, %10.2f, %10.2f, %10.2f \n",
+					detail.getQuantity(), detail.getProduct().getCategory().getName(),
+					detail.getSubTotal(), detail.getProductCost(), detail.getShippingCost());
+		}
+		
+	}
+	
+}

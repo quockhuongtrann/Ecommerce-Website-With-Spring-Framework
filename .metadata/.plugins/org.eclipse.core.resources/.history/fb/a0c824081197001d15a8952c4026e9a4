@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="content" th:remove="tag">
+	<div>
+		<button class="btn btn-primary">Last 7 days</button>
+	</div>
+</div>
+
+</body>
+</html>

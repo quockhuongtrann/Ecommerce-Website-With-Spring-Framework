@@ -1,0 +1,5 @@
+package com.shoptqk.admin;
+
+public class AmazonS3UtilTests {
+
+}

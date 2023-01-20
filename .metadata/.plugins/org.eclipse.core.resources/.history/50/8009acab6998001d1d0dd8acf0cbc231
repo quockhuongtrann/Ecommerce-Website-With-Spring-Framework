@@ -1,0 +1,5 @@
+package com.shoptqk.order;
+
+public class OrderDetailRepositoryTests {
+
+}

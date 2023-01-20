@@ -1,0 +1,8 @@
+package com.shoptqk.admin.report;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class OrderDetailReportService extends AbstractReportService {
+	
+}

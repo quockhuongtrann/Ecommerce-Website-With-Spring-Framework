@@ -1,0 +1,60 @@
+// Sales report common
+var MILLISECONDS_A_DAY = 24 * 60 * 60 * 1000;
+function setUpButtonEventHandlers(reportType, callbackFunction) {
+	divCustomDateRange = $("#divCustomDateRange" + reportType);
+	startDateField = document.getElementById('startDate' + reportType);
+	endDateField = document.getElementById('endDate' + reportType);
+	$(".button-sales-by"+ reportType).on("click", function() {
+		$(".button-sales-by" + reportType).each(function(e) {
+			$(this).removeClass('btn-primary').addClass('btn-light');
+		});
+		
+		$(this).removeClass('btn-light').addClass('btn-primary');
+		
+		period = $(this).attr("period");
+		if (period) {
+			callbackFunction(period);
+			divCustomDateRange.addClass('d-none');
+		} else {
+			divCustomDateRange.removeClass('d-none');
+		}
+	});
+	initCustomDateRange(reportType);
+	
+	$("#buttonViewReportByDateRange" + reportType).on("click", function(e) {
+		validateDateRange(reportType);
+		
+	});
+}
+
+function validateDateRange(reportType) {
+	startDateField = document.getElementById('startDate' + reportType);
+	days = calculateDays();
+	startDateField.setCustomValidity("");
+	if (days >= 7 && days <= 30) {
+		loadSalesReportByDate("custom");
+	} else {
+		startDateField.setCustomValidity("Dates must be in the range of 7..30 days");
+		startDateField.reportValidity();
+	}
+}
+
+function calculateDays(reportType) {
+	startDateField = document.getElementById('startDate' + reportType);
+	endDateField = document.getElementById('endDate' + reportType);
+	
+	startDate = startDateField.valueAsDate;
+	endDate = endDateField.valueAsDate;
+	
+	differenceInMilliseconds = endDate - startDate;
+	return differenceInMilliseconds / MILLISECONDS_A_DAY;
+}
+
+function initCustomDateRange(reportType) {
+	toDate = new Date();
+	endDateField.valueAsDate = toDate;
+	
+	fromDate = new Date();
+	fromDate.setDate(toDate.getDate() - 30);
+	startDateField.valueAsDate = fromDate;
+}

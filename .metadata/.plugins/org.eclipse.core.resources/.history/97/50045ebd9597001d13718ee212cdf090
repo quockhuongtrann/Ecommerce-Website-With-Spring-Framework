@@ -1,0 +1,59 @@
+package com.shoptqk.admin.report;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.shoptqk.admin.order.OrderDetailRepository;
+import com.shoptqk.common.entity.order.OrderDetail;
+
+@Service
+public class OrderDetailReportService extends AbstractReportService {
+
+	@Autowired private OrderDetailRepository orderDetailRepository;
+	
+	@Override
+	protected List<ReportItem> getReportDataByDateRangeInternal(Date startDate, Date endDate, ReportType reportType) {
+		List<OrderDetail> listOrderDetails = null;
+		if (reportType.equals(ReportType.CATEGORY)) {
+			listOrderDetails = orderDetailRepository.findWithCategoryAndTimeBetween(startDate, endDate);
+		}
+		printRawData(listOrderDetails);
+		List<ReportItem> listReportItems = new ArrayList<>();
+		
+		for (OrderDetail detail : listOrderDetails) {
+			String identifier = "";
+			if (reportType.equals(ReportType.CATEGORY)) {
+				identifier = detail.getProduct().getCategory().getName();
+			}
+			ReportItem reportItem = new ReportItem(identifier);
+			
+			float grossSales = detail.getSubTotal() + detail.getShippingCost();
+			float netSales = detail.getSubTotal() - detail.getProductCost();
+			
+			int itemIndex = listReportItems.indexOf(reportItem);
+			if (itemIndex >= 0) {
+				reportItem = listReportItems.get(itemIndex);
+				reportItem.addGrossSales(grossSales);
+				reportItem.addNetSales(netSales);
+				reportItem.increaseProductsCount();
+			} else {
+				listReportItems.add(new ReportItem(identifier, grossSales, netSales, detail.getQuantity()));
+			}
+		}
+		return null;
+	}
+
+	private void printRawData(List<OrderDetail> listOrderDetails) {
+		for (OrderDetail detail : listOrderDetails) {
+			System.out.printf("%d, %-20s, %10.2f, %10.2f, %10.2f \n",
+					detail.getQuantity(), detail.getProduct().getCategory().getName(),
+					detail.getSubTotal(), detail.getProductCost(), detail.getShippingCost());
+		}
+		
+	}
+	
+}

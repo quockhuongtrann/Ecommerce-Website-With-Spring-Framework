@@ -1,0 +1,5 @@
+package com.shoptqk.admin.review;
+
+public class ReviewController {
+
+}

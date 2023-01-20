@@ -1,0 +1,61 @@
+package com.shoptqk.admin.review;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+import java.util.Date;
+
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
+import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.test.annotation.Rollback;
+
+import com.shoptqk.common.entity.Customer;
+import com.shoptqk.common.entity.Review;
+import com.shoptqk.common.entity.product.Product;
+
+@DataJpaTest
+@AutoConfigureTestDatabase(replace = Replace.NONE)
+@Rollback(false)
+public class ReviewRepositoryTests {
+	
+	@Autowired private ReviewRepository reviewRepository;
+	
+	@Test
+	public void testCreateReview() {
+		Integer productId = 1;
+		Product product = new Product(productId);
+		
+		Integer customerId = 5;
+		Customer customer = new Customer(customerId);
+		
+		Review review = new Review();
+		review.setProduct(product);
+		review.setCustomer(customer);
+		review.setReviewTime(new Date());
+		review.setHeadline("Perfect for my needs. Loving it!");
+		review.setComment("Nice to have: wireless remote, iOS app, GPS...");
+		review.setRating(5);
+		
+		Review savedReview = reviewRepository.save(review);
+		
+		assertThat(savedReview).isNotNull();
+		assertThat(savedReview.getId()).isGreaterThan(0);
+	}
+	
+	@Test
+	public void testGetReview() {
+		Integer id = 2;
+		Review review = reviewRepository.findById(id).get();
+		
+		assertThat(review).isNotNull();
+		
+		System.out.println(review);
+	}
+	
+	@Test
+	public void testUpdateReview() {
+		
+	}
+}

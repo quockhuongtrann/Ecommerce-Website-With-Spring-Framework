@@ -1,0 +1,27 @@
+var returnModal;
+var modalTitle;
+var fieldNote;
+$(document).ready(function() {
+	returnModal = $("#returnOrderModal");
+	modalTitle = $("#returnOrderModalTitle");
+	fieldNote = $("#returnNote");
+	$(".linkReturnOrder").on("click", function(e) {
+		e.preventDefault();
+		handleReturnOrderLink($(this));
+	});
+});
+
+function handleReturnOrderLink(link) {
+	orderId = link.attr("orderId");
+	returnModal.modal("show");
+	modalTitle.text("Return Order ID #" + orderId);
+}
+
+function submitReturnOrderForm() {
+	reason = $("input[name='returnReason']:checked").val();
+	note = fieldNote.val();
+
+	sendReturnOrderRequest(reason, note);
+	
+	return false;
+}

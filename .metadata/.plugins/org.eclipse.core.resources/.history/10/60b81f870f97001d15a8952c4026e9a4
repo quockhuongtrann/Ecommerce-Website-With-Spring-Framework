@@ -1,0 +1,5 @@
+package com.shoptqk.admin.report;
+
+public class ReportController {
+
+}

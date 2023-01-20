@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<head th:replace="fragments :: page_head('Write Product Review', 'tag')" />
+</head>
+<body>
+<div class="container-fluid text-center">
+	<div th:replace="navigation :: header_menu"></div>
+	<div th:replace="navigation :: search_nav"></div>
+	<div><h2>Write your Review</h2></div>
+	
+	<div>
+		<img th:src="@{${product.mainImagePath}}" style="height: 200px;" />
+	</div>
+	<div>
+		<div><h4>[[${product.name}]]</h4></div>
+	</div>
+	
+	<form th:action="@{/post_review}" method="post" th:object="${review}" style="max-width: 600px; margin: auto;">
+		
+	</form>
+</div>
+</body>
+</html>

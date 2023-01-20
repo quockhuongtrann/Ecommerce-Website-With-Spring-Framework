@@ -1,0 +1,51 @@
+var confirmText;
+var confirmModalDialog;
+var yesButton;
+
+$(document).ready(function() {
+	confirmText = $("#confirmText");
+	confirmModalDialog = $("#confirmModal");
+	yesButton = $("#yesButton");
+	$(".linkUpdateStatus").on("click", function(e) {
+		e.preventDefault();
+		link = $(this);
+		showUpdateConfirmModal(link);
+	});
+	
+	addEventHandlerForYesButton();
+});
+
+function addEventHandlerForYesButton() {
+	yesButton.click(function(e) {
+		e.preventDefault();
+		sendRequestToUpdateOrderStatus($(this));
+	});
+}
+
+function sendRequestToUpdateOrderStatus(button) {
+	$.ajax({
+		type: 'POST',
+		url: requestUrl,
+		beforeSend: function(xhr) {
+			xhr.setRequestHeader(csrfHeaderName, csrfValue);
+		},
+		data: params
+	}).done(function(shippingCost) {
+		getProductInfo(productId, shippingCost);
+	}).fail(function(err) {
+		showWarningModal(err.responseJSON.message);
+		shippingCost = 0.0;
+		getProductInfo(productId, shippingCost);
+	}).always(function() {
+		$("#addProductModal").modal("hide");
+	});
+}
+
+function showUpdateConfirmModal(link) {
+	orderId = link.attr("orderId");
+	status = link.attr("status");
+	
+	confirmText.text("Are you sure you want to update status of the order ID #" + orderId +
+						" to " + status + "?");
+	confirmModalDialog.modal();
+}

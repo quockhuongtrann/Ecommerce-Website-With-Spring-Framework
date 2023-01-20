@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+	<head th:replace="fragments :: page_head('Home - ShopTqk Admin', 'none')" />
+	<body>
+		<div class="container-fluid">
+			
+			<div th:replace="navigation :: menu"></div>
+			
+			<div class="row">
+				<div class="col">
+					[[${listBrands}]]
+				</div>	
+			</div>
+			
+			<div>
+				<h2>ShopTqk Admin Control Panel</h2>
+				Welcome 
+				<a th:href="@{/account}"
+				 	sec:authentication="principal.fullname"></a>
+				 <span sec:authentication="principal.authorities"></span>
+			</div>			
+		</div>
+		
+		
+	</body>
+</html>

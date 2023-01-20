@@ -1,0 +1,8 @@
+package com.shoptqk.admin.review;
+
+import com.shoptqk.admin.paging.SearchRepository;
+import com.shoptqk.common.entity.Review;
+
+public interface ReviewRepository extends SearchRepository<Review, Integer> {
+
+}

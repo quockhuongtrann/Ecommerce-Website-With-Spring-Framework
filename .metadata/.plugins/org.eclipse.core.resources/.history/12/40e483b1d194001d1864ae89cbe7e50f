@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<body>
+<div th:fragment="content(statusVar, statusName, iconName)" class="col">
+	<th:block th:if="${statusVar}">
+		<i th:class="'fas ' + ${iconName} + 'fa-2x icon-green'"></i>
+	</th:block>
+	<th:block th:unless="${statusVar}">
+	<a class="fas fa-people-carry fa-2x icon-dark linkUpdateStatus"
+		th:id="'linkPICKED' + ${order.id}"
+		th:orderId="${order.id}"
+		status="PICKED"
+		th:href="@{'/orders_shipper/update/' + ${order.id} + '/PICKED'}"></a>
+	</th:block>
+</div>
+</body>
+</html>

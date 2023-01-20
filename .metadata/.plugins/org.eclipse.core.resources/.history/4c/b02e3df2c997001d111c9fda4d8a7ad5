@@ -1,0 +1,38 @@
+package com.shoptqk.review;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
+import com.shoptqk.Utility;
+import com.shoptqk.common.entity.Customer;
+import com.shoptqk.customer.CustomerService;
+
+import jakarta.servlet.http.HttpServletRequest;
+
+@Controller
+public class ReviewController {
+	private String defaultRedirectURL = "redirect:/reviews/page/1?sortField=reviewTime&sortDir=desc";
+	
+	@Autowired private ReviewService reviewService;
+	@Autowired private CustomerService customerService;
+	
+	@GetMapping("/reviews")
+	public String listFirstPage(Model model) {
+		return defaultRedirectURL;
+	}
+	
+	@GetMapping("/reviews/page/{pageNum}")
+	public String listReviewsByCustomerByPage(Model model, HttpServletRequest request,
+			@PathVariable(name = "pageNum") int pageNum,
+			String keyword, String sortField, String sortDir) {
+		Customer customer = getAuthenticated
+	}
+	
+	private Customer getAuthenticatedCustomer(HttpServletRequest request){
+		String email = Utility.getEmailOfAuthenticatedCustomer(request);
+		return customerService.getCustomerByEmail(email);
+	}
+}

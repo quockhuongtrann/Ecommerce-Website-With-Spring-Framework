@@ -1,0 +1,35 @@
+server:
+  port: 80
+  servlet:
+    context-path: /ShopTqk
+spring:
+  datasource:
+    password: khuongLN17
+    url: jdbc:mysql://localhost:3306/shoptqkdb
+    username: root
+    driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+        format_sql: true
+    show-sql: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant-path-matcher
+      
+  main:
+    allow-circular-references: true
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 258629274913-7t5vlhmi6nr4ps80tj4o02o4p7dqh5uj.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+            - email
+            - profile
+    
